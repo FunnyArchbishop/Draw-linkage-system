@@ -1,0 +1,88 @@
+/* ============================================
+   全局样式 — Track Generation App
+   暗色主题、CSS 自定义属性、样式重置
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary: #060d1a;
+  --bg-secondary: #0a192f;
+  --bg-tertiary: #112240;
+  --border-color: #1a3a5c;
+  --text-primary: #ccd6f6;
+  --text-secondary: #8892b0;
+  --text-muted: #5a6a8a;
+  --accent: #64ffda;
+  --accent2: #4CAF50;
+  --danger: #F44336;
+  --warning: #FF9800;
+  --info: #2196F3;
+
+  --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  height: 100%;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #234a6e;
+}
+
+/* 文本选中 */
+::selection {
+  background: rgba(100, 255, 218, 0.2);
+  color: var(--accent);
+}
+
+/* 焦点可见 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 按钮基础重置 */
+button {
+  font-family: inherit;
+}
+
+/* 等宽字体工具类 */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
