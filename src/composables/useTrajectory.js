@@ -12,6 +12,8 @@ const state = reactive({
   pivotO2: null,
   /** @type {{x: number, y: number} | null} 自动计算的地面枢轴 O₄ */
   pivotO4: null,
+  /** @type {{x: number, y: number} | null} 自动计算的地面枢轴 O₆（六杆用） */
+  pivotO6: null,
   /** @type {boolean} 用户是否正在绘制 */
   isDrawing: false
 })
@@ -37,12 +39,14 @@ export function useTrajectory() {
     state.points = []
     state.pivotO2 = null
     state.pivotO4 = null
+    state.pivotO6 = null
   }
 
   /** 设置自动计算的 Pivot 位置（优化器调用） */
-  function setAutoPivots(O2, O4) {
+  function setAutoPivots(O2, O4, O6 = null) {
     state.pivotO2 = O2 ? { x: O2.x, y: O2.y } : null
     state.pivotO4 = O4 ? { x: O4.x, y: O4.y } : null
+    state.pivotO6 = O6 ? { x: O6.x, y: O6.y } : null
   }
 
   const pointCount = computed(() => state.points.length)

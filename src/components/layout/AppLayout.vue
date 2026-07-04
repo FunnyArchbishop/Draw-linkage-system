@@ -1,8 +1,8 @@
 <template>
   <div class="app-layout">
     <header class="app-header">
-      <h1>Track Generation — Four-Bar Linkage</h1>
-      <div class="header-subtitle">手绘轨迹 · 差分进化优化 · 四连杆机构最大程度拟合</div>
+      <h1>Track Generation — Multi-Bar Linkage</h1>
+      <div class="header-subtitle">手绘轨迹 · 差分进化优化 · 多连杆机构最大程度拟合</div>
     </header>
     <main class="app-main">
       <section class="panel canvas-section"><UnifiedCanvas /></section>

@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "dev (开发服务器)",
+      "type": "shell",
+      "command": "cmd",
+      "args": ["/c", "node", "./node_modules/vite/bin/vite.js"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": { "kind": "build", "isDefault": false },
+      "problemMatcher": []
+    },
+    {
+      "label": "build (生产构建)",
+      "type": "shell",
+      "command": "cmd",
+      "args": ["/c", "node", "./node_modules/vite/bin/vite.js", "build"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "preview (预览)",
+      "type": "shell",
+      "command": "cmd",
+      "args": ["/c", "node", "./node_modules/vite/bin/vite.js", "preview"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -72,18 +72,47 @@ function renderFrame(ts) {
 
   // 连杆机构
   const { currentState, tracePoints, couplerCurve } = linkage.state
+  const isMultiBar = linkage.state.linkageType !== 'fourbar'
   if (anim) {
     if (tracePoints.length >= 2) canvas.drawPolyline(tracePoints, '#4CAF50', 2.5)
     if (currentState) {
-      const { O2, O4, A, B, P } = currentState
-      canvas.drawLine(O2.x, O2.y, O4.x, O4.y, '#666', 2)
-      canvas.drawLine(O2.x, O2.y, A.x, A.y, '#F44336', 3)
-      canvas.drawLine(A.x, A.y, B.x, B.y, '#2196F3', 3)
-      canvas.drawLine(B.x, B.y, O4.x, O4.y, '#FF9800', 3)
-      canvas.drawLine(A.x, A.y, P.x, P.y, 'rgba(76,175,80,0.5)', 2)
-      canvas.drawCircle(O2.x, O2.y, 7, '#F44336'); canvas.drawCircle(O4.x, O4.y, 7, '#FF9800')
-      canvas.drawCircle(A.x, A.y, 5, '#FF5252'); canvas.drawCircle(B.x, B.y, 5, '#FFB74D')
-      canvas.drawCircle(P.x, P.y, 5, '#4CAF50')
+      const { O2, O4, O6, A, B, D, E, P } = currentState
+
+      // 地面连杆 (O₂—O₄ 和 O₄—O₆)
+      if (O2 && O4) canvas.drawLine(O2.x, O2.y, O4.x, O4.y, '#666', 2)
+      if (isMultiBar && O4 && O6) canvas.drawLine(O4.x, O4.y, O6.x, O6.y, '#555', 2)
+      if (isMultiBar && O2 && O6) canvas.drawLine(O2.x, O2.y, O6.x, O6.y, 'rgba(100,100,100,0.3)', 1)
+
+      // 回路1
+      if (O2 && A) canvas.drawLine(O2.x, O2.y, A.x, A.y, '#F44336', 3)
+      if (A && B) canvas.drawLine(A.x, A.y, B.x, B.y, '#2196F3', 3)
+      if (B && O4) canvas.drawLine(B.x, B.y, O4.x, O4.y, '#FF9800', 3)
+
+      // 回路2 (六杆)
+      if (isMultiBar && D && E) {
+        if (O4 && D) canvas.drawLine(O4.x, O4.y, D.x, D.y, '#E91E63', 3)
+        canvas.drawLine(D.x, D.y, E.x, E.y, '#00BCD4', 3)
+        if (E && O6) canvas.drawLine(E.x, E.y, O6.x, O6.y, '#9C27B0', 3)
+        // 耦合连杆 B—D
+        if (B && D) canvas.drawLine(B.x, B.y, D.x, D.y, 'rgba(255,255,255,0.4)', 1.5)
+      }
+
+      // 输出连杆 (A→P)
+      if (A && P) canvas.drawLine(A.x, A.y, P.x, P.y, 'rgba(76,175,80,0.5)', 2)
+
+      // 枢轴点
+      if (O2) canvas.drawCircle(O2.x, O2.y, 7, '#F44336')
+      if (O4) canvas.drawCircle(O4.x, O4.y, 7, '#FF9800')
+      if (isMultiBar && O6) canvas.drawCircle(O6.x, O6.y, 7, '#9C27B0')
+
+      // 铰接点
+      if (A) canvas.drawCircle(A.x, A.y, 5, '#FF5252')
+      if (B) canvas.drawCircle(B.x, B.y, 5, '#FFB74D')
+      if (isMultiBar && D) canvas.drawCircle(D.x, D.y, 5, '#E91E63')
+      if (isMultiBar && E) canvas.drawCircle(E.x, E.y, 5, '#CE93D8')
+
+      // 输出点
+      if (P) canvas.drawCircle(P.x, P.y, 5, '#4CAF50')
     }
     if (couplerCurve.length > 0) canvas.drawPolyline(couplerCurve, 'rgba(76,175,80,0.2)', 1, true)
   } else if (couplerCurve.length > 0) {
@@ -93,8 +122,10 @@ function renderFrame(ts) {
   // Pivot 标签
   const pivO2 = linkage.state.O2 || trajectory.state.pivotO2
   const pivO4 = linkage.state.O4 || trajectory.state.pivotO4
-  if (pivO2) { canvas.drawCircle(pivO2.x, pivO2.y, 6, '#F44336'); if (canvas.view.zoom > 0.4) canvas.drawText('O₂', pivO2.x, pivO2.y, '#D32F2F', 13) }
-  if (pivO4) { canvas.drawCircle(pivO4.x, pivO4.y, 6, '#FF9800'); if (canvas.view.zoom > 0.4) canvas.drawText('O₄', pivO4.x, pivO4.y, '#E65100', 13) }
+  const pivO6 = linkage.state.O6 || trajectory.state.pivotO6
+  if (pivO2) { canvas.drawCircle(pivO2.x, pivO2.y, 6, '#F44336'); if (canvas.view.zoom > 0.4) canvas.drawText('O2', pivO2.x, pivO2.y, '#D32F2F', 13) }
+  if (pivO4) { canvas.drawCircle(pivO4.x, pivO4.y, 6, '#FF9800'); if (canvas.view.zoom > 0.4) canvas.drawText('O4', pivO4.x, pivO4.y, '#E65100', 13) }
+  if (pivO6) { canvas.drawCircle(pivO6.x, pivO6.y, 6, '#9C27B0'); if (canvas.view.zoom > 0.4) canvas.drawText('O6', pivO6.x, pivO6.y, '#7B1FA2', 13) }
 
   animFrameId = requestAnimationFrame(renderFrame)
 }
